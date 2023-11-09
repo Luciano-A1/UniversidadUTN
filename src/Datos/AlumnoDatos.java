@@ -118,6 +118,30 @@ public class AlumnoDatos {
         System.out.println("---> Lista de Alumnos Registrada");
         return listaA;
     }
+    
+    public static List<Alumno> listarAlumnoActivo() {
+        List<Alumno> listaA = new ArrayList<>();
+        String sql = "select * from alumno where estado = 1";
+        try {
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Alumno alumno = new Alumno();
+                alumno.setIdAlumno(rs.getInt("idAlumno"));
+                alumno.setDni(rs.getInt("dni"));
+                alumno.setApellido(rs.getString("apellido"));
+                alumno.setNombre(rs.getString("nombre"));
+                alumno.setFechaN(rs.getDate("fechaN").toLocalDate());
+                alumno.setEstado(rs.getBoolean("estado"));
+                listaA.add(alumno);
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error: Acceso a la tabla de Alumnos");
+        }
+        System.out.println("---> Lista de Alumnos Registrada");
+        return listaA;
+    }
 
     public static void modicarAlumno(Alumno alumno) {
         String sql = "update alumno set dni = ?, apellido = ?, nombre = ?, fechaN = ? where idAlumno = ?";
