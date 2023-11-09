@@ -1,9 +1,17 @@
 package Vistas;
 
+import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+
 public class Menu extends javax.swing.JFrame {
 
     public Menu() {
         initComponents();
+        setLocationRelativeTo(null);
+        this.setIconImage(new ImageIcon(getClass().getResource("/Imagenes/utn.png")).getImage());
+        this.setTitle("Universidad Tecnologica Nacional");
+        this.setResizable(false);
     }
 
     /**
@@ -15,7 +23,13 @@ public class Menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jDesktopPane1 = new javax.swing.JDesktopPane();
+        ImageIcon icon = new ImageIcon(getClass().getResource("/Imagenes/imgEst.jpg"));
+        Image image = icon.getImage();
+        jDesktopPane1 = new javax.swing.JDesktopPane(){
+            public void paintComponent(Graphics g){
+                g.drawImage(image,0,0,getWidth(),getHeight(),this);
+            }
+        };
         jMenuBar1 = new javax.swing.JMenuBar();
         Adminstrador = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -34,9 +48,13 @@ public class Menu extends javax.swing.JFrame {
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 582, Short.MAX_VALUE)
+            .addGap(0, 591, Short.MAX_VALUE)
         );
 
+        jMenuBar1.setBackground(new java.awt.Color(0, 102, 255));
+
+        Adminstrador.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(0, 102, 255))); // NOI18N
+        Adminstrador.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/mna.png"))); // NOI18N
         Adminstrador.setText("Administrador");
 
         jMenuItem1.setText("Gestion de Alumnos");
@@ -47,7 +65,12 @@ public class Menu extends javax.swing.JFrame {
         });
         Adminstrador.add(jMenuItem1);
 
-        jMenuItem2.setText("jMenuItem2");
+        jMenuItem2.setText("Gestion de Materias");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         Adminstrador.add(jMenuItem2);
 
         jMenuItem3.setText("jMenuItem3");
@@ -86,6 +109,16 @@ public class Menu extends javax.swing.JFrame {
         this.jDesktopPane1.add(gda);
         this.jDesktopPane1.moveToFront(gda);   
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // Gestion De Alumnos
+        this.jDesktopPane1.removeAll();
+        this.jDesktopPane1.repaint();
+        GestionDeMaterias gdm = new GestionDeMaterias();
+        gdm.setVisible(true);
+        this.jDesktopPane1.add(gdm);
+        this.jDesktopPane1.moveToFront(gdm);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
      * @param args the command line arguments
