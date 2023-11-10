@@ -1,22 +1,37 @@
-
 package Vistas;
 
+import Datos.MateriaDatos;
+import Entidades.Materia;
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
-/**
- *
- * @author lucia
- */
 public class GestionDeMaterias extends javax.swing.JInternalFrame {
+
+    private DefaultTableModel modelo = new DefaultTableModel() {
+        public boolean isCellEditable(int fila, int columna) {
+            if (columna != 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    };
 
     /**
      * Creates new form GestionDeMaterias
      */
     public GestionDeMaterias() {
         initComponents();
+        armarCabezera();
+        textmod(false);
+        cargarTabla();
+        agregarCheckBox(3, jTable1);
+        ajustarAlturaDeFilas(40);
     }
 
     /**
@@ -45,16 +60,14 @@ public class GestionDeMaterias extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jtNombre = new javax.swing.JTextField();
-        jtApellido = new javax.swing.JTextField();
-        jtDni = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jdateFechaN = new com.toedter.calendar.JDateChooser();
+        jtAño = new javax.swing.JTextField();
         jbNuevo = new javax.swing.JButton();
         jbAgregar = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
         jbModificar = new javax.swing.JButton();
         jbEliminar = new javax.swing.JButton();
         jbSalir = new javax.swing.JButton();
+        jrAnual = new javax.swing.JRadioButton();
 
         setTitle("Gestion De Materias");
 
@@ -91,7 +104,7 @@ public class GestionDeMaterias extends javax.swing.JInternalFrame {
 
         jLabel2.setBackground(new java.awt.Color(0, 153, 255));
         jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jLabel2.setText("Crear Alumno");
+        jLabel2.setText("Crear Materia");
         jLabel2.setOpaque(true);
 
         jLabel3.setBackground(new java.awt.Color(0, 153, 255));
@@ -101,12 +114,12 @@ public class GestionDeMaterias extends javax.swing.JInternalFrame {
 
         jLabel4.setBackground(new java.awt.Color(0, 153, 255));
         jLabel4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel4.setText("Apellido:");
+        jLabel4.setText("Año:");
         jLabel4.setOpaque(true);
 
         jLabel5.setBackground(new java.awt.Color(0, 153, 255));
         jLabel5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel5.setText("Dni:");
+        jLabel5.setText("Anual:");
         jLabel5.setOpaque(true);
 
         jtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -115,24 +128,13 @@ public class GestionDeMaterias extends javax.swing.JInternalFrame {
             }
         });
 
-        jtApellido.addKeyListener(new java.awt.event.KeyAdapter() {
+        jtAño.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                jtApellidoKeyTyped(evt);
+                jtAñoKeyTyped(evt);
             }
         });
 
-        jtDni.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jtDniKeyTyped(evt);
-            }
-        });
-
-        jLabel6.setBackground(new java.awt.Color(0, 153, 255));
-        jLabel6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel6.setText("Fecha De Nacimiento:");
-        jLabel6.setOpaque(true);
-
-        jbNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/nuev.png"))); // NOI18N
+        jbNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/addM.png"))); // NOI18N
         jbNuevo.setText("Nuevo");
         jbNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -140,7 +142,7 @@ public class GestionDeMaterias extends javax.swing.JInternalFrame {
             }
         });
 
-        jbAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/agre.png"))); // NOI18N
+        jbAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/newM.png"))); // NOI18N
         jbAgregar.setText("Agregar");
         jbAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -153,7 +155,7 @@ public class GestionDeMaterias extends javax.swing.JInternalFrame {
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jSeparator2.setOpaque(true);
 
-        jbModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/conf.png"))); // NOI18N
+        jbModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/modM.png"))); // NOI18N
         jbModificar.setText("Modificar");
         jbModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -161,7 +163,7 @@ public class GestionDeMaterias extends javax.swing.JInternalFrame {
             }
         });
 
-        jbEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/eli.png"))); // NOI18N
+        jbEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/deleM.png"))); // NOI18N
         jbEliminar.setText("Eliminar");
         jbEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -176,6 +178,10 @@ public class GestionDeMaterias extends javax.swing.JInternalFrame {
                 jbSalirActionPerformed(evt);
             }
         });
+
+        jrAnual.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jrAnual.setSelected(true);
+        jrAnual.setText("Si/No");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -199,28 +205,25 @@ public class GestionDeMaterias extends javax.swing.JInternalFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel4)
-                                            .addComponent(jLabel5))
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel3)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel4)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jtAño, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addGap(18, 18, 18)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jtApellido)
-                                            .addComponent(jtDni, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE))
-                                        .addGap(37, 37, 37)
-                                        .addComponent(jbNuevo)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jbAgregar))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel6)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jdateFechaN, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(jLabel5))
+                                    .addComponent(jbNuevo))
                                 .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jbAgregar)
+                                    .addComponent(jrAnual))
+                                .addGap(179, 179, 179)
                                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -228,7 +231,7 @@ public class GestionDeMaterias extends javax.swing.JInternalFrame {
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(jbModificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(jbEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addGap(0, 145, Short.MAX_VALUE))
+                                        .addGap(0, 141, Short.MAX_VALUE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jbSalir)
@@ -253,28 +256,22 @@ public class GestionDeMaterias extends javax.swing.JInternalFrame {
                         .addComponent(jLabel2)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(24, 24, 24)
+                                .addGap(21, 21, 21)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel6))
-                                    .addComponent(jdateFechaN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jLabel3)
+                                        .addComponent(jtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel5)
+                                        .addComponent(jrAnual)))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel4)
-                                    .addComponent(jtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(jLabel5)
-                                            .addComponent(jtDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(5, 5, 5)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(jbNuevo)
-                                            .addComponent(jbAgregar)))))
+                                    .addComponent(jtAño, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jbNuevo)
+                                    .addComponent(jbAgregar)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(19, 19, 19)
                                 .addComponent(jbModificar)
@@ -302,18 +299,17 @@ public class GestionDeMaterias extends javax.swing.JInternalFrame {
 
     private void jtBuscarXNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtBuscarXNombreKeyReleased
         // Busqueda de datos y agregarlo en la tabla
-//        String nombre = this.jtBuscarXNombre.getText();
-//        modelo.setRowCount(0);
-//        for (Alumno alu : AlumnoDatos.listarAlumnoActivo()) {
-//            if (alu.getNombre().toLowerCase().startsWith(nombre.toLowerCase())) {
-//                int id = alu.getIdAlumno();
-//                String nom = alu.getNombre();
-//                String ape = alu.getApellido();
-//                int dni = alu.getDni();
-//                Date fNac = Date.valueOf(alu.getFechaN());
-//                modelo.addRow(new Object[]{id, nom, ape, dni, fNac});
-//            }
-//        }
+        String nombre = this.jtBuscarXNombre.getText();
+        modelo.setRowCount(0);
+        for (Materia mat : MateriaDatos.listarMateriasActivas()) {
+            if (mat.getNombre().toLowerCase().startsWith(nombre.toLowerCase())) {
+                int id = mat.getIdMateria();
+                String nom = mat.getNombre();
+                int año = mat.getAño();
+                boolean anual = mat.isAnual();
+                modelo.addRow(new Object[]{id, nom, año, anual});
+            }
+        }
     }//GEN-LAST:event_jtBuscarXNombreKeyReleased
 
     private void jtBuscarXNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtBuscarXNombreKeyTyped
@@ -342,103 +338,89 @@ public class GestionDeMaterias extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jtNombreKeyTyped
 
-    private void jtApellidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtApellidoKeyTyped
-        // para que los text field no tome numeros
-        int key = evt.getKeyChar();
-
-        boolean mayusculas = key >= 65 && key <= 90;
-        boolean minusculas = key >= 97 && key <= 122;
-        boolean espacio = key == 32;
-
-        if (!(minusculas || mayusculas || espacio)) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_jtApellidoKeyTyped
-
-    private void jtDniKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtDniKeyTyped
+    private void jtAñoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtAñoKeyTyped
         char c = evt.getKeyChar();
         // Verifica si el carácter es un dígito (0-9)
         if (!Character.isDigit(c)) {
             evt.consume();  // Si no es un dígito, consumir el evento
         }
-    }//GEN-LAST:event_jtDniKeyTyped
+    }//GEN-LAST:event_jtAñoKeyTyped
 
     private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
         // Nuevo
-//        textmod(true);
-//        limpiar();
+        textmod(true);
+        limpiar();
     }//GEN-LAST:event_jbNuevoActionPerformed
 
     private void jbAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAgregarActionPerformed
         // Agregar
-//        try {
-//            String nom = this.jtNombre.getText();
-//            String ape = this.jtApellido.getText();
-//            String dniText = this.jtDni.getText();
-//
-//            if (nom.isEmpty() || ape.isEmpty() || dniText.isEmpty() || this.jdateFechaN.getDate() == null) {
-//                JOptionPane.showMessageDialog(null, "No deben quedar campos vacíos");
-//                limpiar();
-//            } else {
-//                int dni = Integer.parseInt(dniText);
-//                java.util.Date fechaN = this.jdateFechaN.getDate();
-//                java.sql.Date sqlDateFecha = new java.sql.Date(fechaN.getTime());
-//
-//                AlumnoDatos.guardarAlumno(new Alumno(dni, ape, nom, sqlDateFecha.toLocalDate(), true));
-//                modelo.setRowCount(0);
-//                cargarTabla();
-//                limpiar();
-//                textmod(false);
-//            }
-//        } catch (NumberFormatException ex) {
-//            JOptionPane.showMessageDialog(null, "El campo DNI debe ser un número válido.");
-//            limpiar();
-//        }
+        try {
+            String nom = this.jtNombre.getText();
+            String año = this.jtAño.getText();
+
+            if (nom.isEmpty() || año.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No deben quedar campos vacíos");
+                limpiar();
+            } else {
+                int anio = Integer.parseInt(año);
+                boolean anu = this.jrAnual.isSelected();
+                MateriaDatos.guardarMateria(new Materia(nom, anio, anu, true));
+                modelo.setRowCount(0);
+                cargarTabla();
+                limpiar();
+                textmod(false);
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "El campo AÑO debe ser un número válido.");
+            limpiar();
+        }
     }//GEN-LAST:event_jbAgregarActionPerformed
 
     private void jbModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbModificarActionPerformed
-//        try {
-//            int filaSelecionada = this.jTable1.getSelectedRow();
-//            if (filaSelecionada != -1) { // Verifica si se ha seleccionado una fila válida
-//                int id = Integer.parseInt(modelo.getValueAt(filaSelecionada, 0).toString());
-//                String nomb = modelo.getValueAt(filaSelecionada, 1).toString();
-//                String ape = modelo.getValueAt(filaSelecionada, 2).toString();
-//                int d = Integer.parseInt(modelo.getValueAt(filaSelecionada, 3).toString());
-//                // Obtén la fecha como un objeto java.util.Date
-//                java.util.Date utilDatefechaN = (java.util.Date) modelo.getValueAt(filaSelecionada, 4);
-//                // Convierte las fechas de java.util.Date a java.sql.Date
-//                java.sql.Date sqlDatefechaN = new java.sql.Date(utilDatefechaN.getTime());
-//                if (d < 0) {
-//                    throw new IllegalArgumentException("Número negativo no permitido");
-//                }
-//                AlumnoDatos.modicarAlumno(new Alumno(id, d, ape, nomb, sqlDatefechaN.toLocalDate(), true));
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Por favor, seleccione una fila antes de intentar actualizar.", "Error", JOptionPane.ERROR_MESSAGE);
-//            }
-//            modelo.fireTableDataChanged();
-//
-//        } catch (NumberFormatException ex) {
-//            JOptionPane.showMessageDialog(null, "Debe ingresar números ", "Error", JOptionPane.ERROR_MESSAGE);
-//            modelo.setRowCount(0);
-//            cargarTabla();
-//        } catch (IllegalArgumentException e) {
-//            JOptionPane.showMessageDialog(null, "Debe ingresar números reales positivos", "Error", JOptionPane.ERROR_MESSAGE);
-//            modelo.setRowCount(0);
-//            cargarTabla();
-//        }
+        try {
+            int filaSelecionada = this.jTable1.getSelectedRow();
+            if (filaSelecionada != -1) { // Verifica si se ha seleccionado una fila válida
+                int id = Integer.parseInt(modelo.getValueAt(filaSelecionada, 0).toString());
+                String nomb = modelo.getValueAt(filaSelecionada, 1).toString();
+                int anio = Integer.parseInt(modelo.getValueAt(filaSelecionada, 2).toString());
+                boolean anu = Boolean.parseBoolean(modelo.getValueAt(filaSelecionada, 3).toString());
+                if (anio < 0) {
+                    throw new IllegalArgumentException("Número negativo no permitido");
+                }
+                if (soloLetras(nomb)) {
+                    MateriaDatos.modicarMateria(new Materia(id, nomb, anio, anu, true));
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ingrese valores de tipo texto");
+                    modelo.setRowCount(0);
+                    cargarTabla();
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Por favor, seleccione una fila antes de intentar actualizar.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            modelo.fireTableDataChanged();
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar números ", "Error", JOptionPane.ERROR_MESSAGE);
+            modelo.setRowCount(0);
+            cargarTabla();
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar números reales positivos", "Error", JOptionPane.ERROR_MESSAGE);
+            modelo.setRowCount(0);
+            cargarTabla();
+        }
     }//GEN-LAST:event_jbModificarActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
-        // Eliminar
-//        int filaSelecionada = this.jTable1.getSelectedRow();
-//        if (filaSelecionada != -1) {// Verifica si se ha seleccionado una fila válida
-//            int id = Integer.parseInt(modelo.getValueAt(filaSelecionada, 0).toString());
-//            AlumnoDatos.eliminarAlumno(id);
-//        } else {
-//            JOptionPane.showMessageDialog(this, "Por favor, seleccione una fila en la tabla antes de Eliminar un Alumno", "Error", JOptionPane.ERROR_MESSAGE);
-//        }
-//        modelo.setRowCount(0);
-//        cargarTabla();
+//         Eliminar
+        int filaSelecionada = this.jTable1.getSelectedRow();
+        if (filaSelecionada != -1) {// Verifica si se ha seleccionado una fila válida
+            int id = Integer.parseInt(modelo.getValueAt(filaSelecionada, 0).toString());
+            MateriaDatos.eliminarMateria(id);
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione una fila en la tabla antes de Eliminar un Alumno", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        modelo.setRowCount(0);
+        cargarTabla();
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
@@ -453,7 +435,6 @@ public class GestionDeMaterias extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
@@ -464,10 +445,55 @@ public class GestionDeMaterias extends javax.swing.JInternalFrame {
     private javax.swing.JButton jbModificar;
     private javax.swing.JButton jbNuevo;
     private javax.swing.JButton jbSalir;
-    private com.toedter.calendar.JDateChooser jdateFechaN;
-    private javax.swing.JTextField jtApellido;
+    private javax.swing.JRadioButton jrAnual;
+    private javax.swing.JTextField jtAño;
     private javax.swing.JTextField jtBuscarXNombre;
-    private javax.swing.JTextField jtDni;
     private javax.swing.JTextField jtNombre;
     // End of variables declaration//GEN-END:variables
+
+    private void armarCabezera() {
+        modelo.addColumn("IdMateria");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Año");
+        modelo.addColumn("Anual");
+        this.jTable1.setModel(modelo);
+    }
+
+    private void cargarTabla() {
+        for (Materia mat : MateriaDatos.listarMateriasActivas()) {
+            int id = mat.getIdMateria();
+            String nom = mat.getNombre();
+            int año = mat.getAño();
+            boolean anual = mat.isAnual();
+            modelo.addRow(new Object[]{id, nom, año, anual});
+        }
+    }
+
+
+    private void textmod(boolean ok) {
+        this.jtNombre.setEnabled(ok);
+        this.jtAño.setEnabled(ok);
+        this.jrAnual.setEnabled(ok);
+        this.jbAgregar.setEnabled(ok);
+    }
+
+
+    private void limpiar() {
+        this.jtNombre.setText("");
+        this.jtAño.setText("");
+    }
+
+    private void agregarCheckBox(int columna, JTable tabla) {
+        TableColumn tc = tabla.getColumnModel().getColumn(columna);
+        tc.setCellEditor(tabla.getDefaultEditor(Boolean.class));
+        tc.setCellRenderer(tabla.getDefaultRenderer(Boolean.class));
+    }
+
+    private void ajustarAlturaDeFilas(int altura) {
+        jTable1.setRowHeight(altura);
+    }
+
+    private boolean soloLetras(String palabra) {
+        return palabra.matches("[a-zA-Z ]+");
+    }
 }

@@ -83,6 +83,28 @@ public class MateriaDatos {
         System.out.println("---> Lista de Materias Registrada");
         return listaMaterias;
     }
+    
+    public static List<Materia> listarMateriasActivas() {
+        List<Materia> listaMaterias = new ArrayList<>();
+        String sqlMateria = "select * from materia where estado = 1";
+        try {
+            ps = con.prepareStatement(sqlMateria);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Materia materia = new Materia();
+                materia.setIdMateria(rs.getInt("idMateria"));
+                materia.setNombre(rs.getString("nombre"));
+                materia.setAño(rs.getInt("año"));
+                materia.setAnual(rs.getBoolean("anual"));
+                materia.setEstado(rs.getBoolean("estado"));
+                listaMaterias.add(materia);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al acceder a la tabla de materias");
+        }
+        System.out.println("---> Lista de Materias Registrada");
+        return listaMaterias;
+    }
 
     public static void modicarMateria(Materia materia) {
         String sql = "update materia set nombre = ?, año = ?, anual = ? where idMateria = ?";

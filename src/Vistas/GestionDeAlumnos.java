@@ -165,7 +165,7 @@ public class GestionDeAlumnos extends javax.swing.JInternalFrame {
 
         jLabel2.setBackground(new java.awt.Color(0, 153, 255));
         jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jLabel2.setText("Crear Materia");
+        jLabel2.setText("Crear Alumno");
         jLabel2.setOpaque(true);
 
         jLabel3.setBackground(new java.awt.Color(0, 153, 255));
@@ -275,7 +275,7 @@ public class GestionDeAlumnos extends javax.swing.JInternalFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addComponent(jLabel4)
                                             .addComponent(jLabel5))
                                         .addGap(18, 18, 18)
@@ -327,10 +327,10 @@ public class GestionDeAlumnos extends javax.swing.JInternalFrame {
                         .addComponent(jLabel2)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(24, 24, 24)
+                                .addGap(21, 21, 21)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel3)
                                         .addComponent(jtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jLabel6))
                                     .addComponent(jdateFechaN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -503,7 +503,13 @@ public class GestionDeAlumnos extends javax.swing.JInternalFrame {
                 if (d < 0) {
                     throw new IllegalArgumentException("Número negativo no permitido");
                 }
-                AlumnoDatos.modicarAlumno(new Alumno(id, d, ape, nomb, sqlDatefechaN.toLocalDate(), true));
+                if (soloLetras(nomb) && soloLetras(ape)) {
+                    AlumnoDatos.modicarAlumno(new Alumno(id, d, ape, nomb, sqlDatefechaN.toLocalDate(), true));
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ingrese valores de tipo texto");
+                    modelo.setRowCount(0);
+                    cargarTabla();
+                }
             } else {
                 JOptionPane.showMessageDialog(this, "Por favor, seleccione una fila antes de intentar actualizar.", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -590,5 +596,9 @@ public class GestionDeAlumnos extends javax.swing.JInternalFrame {
 
     private void ajustarAlturaDeFilas(int altura) {
         jTable1.setRowHeight(altura);
+    }
+    
+    private boolean soloLetras(String palabra) {
+        return palabra.matches("[a-zA-Z ]+");
     }
 }
