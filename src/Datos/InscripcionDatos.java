@@ -1,6 +1,7 @@
 package Datos;
 
 import Entidades.Inscripcion;
+import Entidades.Materia;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,11 +38,11 @@ public class InscripcionDatos {
             JOptionPane.showMessageDialog(null, "Error al insertar " + ex.getMessage());
         }
     }
-    
-    public static Inscripcion buscarInscripcionPorId(int id){
+
+    public static Inscripcion buscarInscripcionPorId(int id) {
         String busquedaSQL = "select nota, idAlumno, idMateria from inscripcion where idInscripcion = ?";
         Inscripcion insc = new Inscripcion();
-         try {
+        try {
             ps = con.prepareStatement(busquedaSQL);
             ps.setInt(1, id);
             rs = ps.executeQuery();
@@ -67,10 +68,10 @@ public class InscripcionDatos {
             ps = con.prepareStatement(sqlBusqueda);
             rs = ps.executeQuery();
             while (rs.next()) {
-                Inscripcion inscripcion = new Inscripcion();                
+                Inscripcion inscripcion = new Inscripcion();
                 inscripcion.setIdInscripcion(rs.getInt("idInscripcion"));
                 inscripcion.setNota(rs.getInt("Nota"));
-                inscripcion.setAlumno( AlumnoDatos.buscarAlumnosPorId(rs.getInt("idAlumno")));
+                inscripcion.setAlumno(AlumnoDatos.buscarAlumnosPorId(rs.getInt("idAlumno")));
                 inscripcion.setMateria(MateriaDatos.buscarMateriaPorId(rs.getInt("idMateria")));
                 listaInsc.add(inscripcion);
             }
@@ -79,6 +80,57 @@ public class InscripcionDatos {
             JOptionPane.showMessageDialog(null, "Error al acceder a los datos de las tablas" + ex.getMessage());
         }
         return listaInsc;
+    }
+
+    public static List<Materia> obtenerMateriasCursadas(int idA) {
+        List<Materia> materia = new ArrayList<>();
+        
+        String sqlBusqueda = "SELECT inscripcion.idMateria, nombre, año, anual FROM inscripcion JOIN materia ON(inscripcion.idMateria=materia.idMateria) WHERE inscripcion.idAlumno = ?";
+        
+        try {
+            ps = con.prepareStatement(sqlBusqueda);
+            ps.setInt(1, idA);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Materia materia1 = new Materia();
+                materia1.setIdMateria(rs.getInt("idMateria"));
+                materia1.setNombre(rs.getString("Nombre"));
+                materia1.setAño(rs.getInt("Año"));
+                materia1.setAnual(rs.getBoolean("anual"));
+                materia1.setEstado(rs.getBoolean("estado"));
+                materia.add(materia1);
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al acceder a los datos de la tabla inscripción" + ex.getMessage());
+        }
+        return materia;
+
+    }
+    
+     public static List<Materia> obtenerMateriasNoCursadas(int idA){
+        
+         List<Materia> materiaNoCursadas=new ArrayList<>();
+        
+        String sqlBusqueda="select * from materia where estado=1 and idMateria not in (select idMateria from inscripcion where idAlumno=?)";
+        try {
+            ps=con.prepareStatement(sqlBusqueda);
+             ps.setInt(1,idA);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                Materia materiaNo = new Materia();
+                materiaNo.setIdMateria(rs.getInt("idMateria"));
+                materiaNo.setNombre(rs.getString("Nombre"));
+                materiaNo.setAño(rs.getInt("Año"));
+                materiaNo.setAnual(rs.getBoolean("anual"));
+                materiaNo.setEstado(rs.getBoolean("estado"));
+                materiaNoCursadas.add(materiaNo);
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null,"Error al acceder a los datos de la tabla inscripción"+ex.getMessage());
+        }
+        return materiaNoCursadas;
     }
 
     public static void modificarInscripcion(Inscripcion insc) {

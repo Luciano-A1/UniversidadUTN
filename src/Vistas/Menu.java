@@ -34,8 +34,9 @@ public class Menu extends javax.swing.JFrame {
         Adminstrador = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -57,6 +58,7 @@ public class Menu extends javax.swing.JFrame {
         Adminstrador.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/mna.png"))); // NOI18N
         Adminstrador.setText("Administrador");
 
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/conf.png"))); // NOI18N
         jMenuItem1.setText("Gestion de Alumnos");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -65,6 +67,7 @@ public class Menu extends javax.swing.JFrame {
         });
         Adminstrador.add(jMenuItem1);
 
+        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/modi.png"))); // NOI18N
         jMenuItem2.setText("Gestion de Materias");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -73,12 +76,21 @@ public class Menu extends javax.swing.JFrame {
         });
         Adminstrador.add(jMenuItem2);
 
-        jMenuItem3.setText("jMenuItem3");
-        Adminstrador.add(jMenuItem3);
-
         jMenuBar1.add(Adminstrador);
 
-        jMenu2.setText("Edit");
+        jMenu2.setText("Inscripciones");
+
+        jMenuItem4.setText("Manejo de Incripciones");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem4);
+
+        jMenuItem5.setText("jMenuItem5");
+        jMenu2.add(jMenuItem5);
+
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("jMenu3");
@@ -119,6 +131,16 @@ public class Menu extends javax.swing.JFrame {
         this.jDesktopPane1.add(gdm);
         this.jDesktopPane1.moveToFront(gdm);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // Gestion De Inscripciones
+        this.jDesktopPane1.removeAll();
+        this.jDesktopPane1.repaint();
+        GestionDeInscripciones gdi = new GestionDeInscripciones();
+        gdi.setVisible(true);
+        this.jDesktopPane1.add(gdi);
+        this.jDesktopPane1.moveToFront(gdi);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -163,6 +185,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     // End of variables declaration//GEN-END:variables
 }
