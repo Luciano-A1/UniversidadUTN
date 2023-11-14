@@ -2,11 +2,14 @@ package Vistas;
 
 import Datos.AlumnoDatos;
 import Datos.InscripcionDatos;
+import Datos.MateriaDatos;
 import Entidades.Alumno;
+import Entidades.Inscripcion;
 import Entidades.Materia;
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class GestionDeInscripciones extends javax.swing.JInternalFrame {
@@ -25,7 +28,10 @@ public class GestionDeInscripciones extends javax.swing.JInternalFrame {
         initComponents();
         armarCabezera();
         cargarCombox();
+        modelo.setRowCount(0);
         cargarTabla();
+        botonAnular();
+        ajustarAlturaDeFilas(40);
     }
 
     /**
@@ -37,7 +43,7 @@ public class GestionDeInscripciones extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        ImageIcon icon = new ImageIcon(getClass().getResource("/Imagenes/imgEst1.jpg"));
+        ImageIcon icon = new ImageIcon(getClass().getResource("/Imagenes/imgIncs.jpg"));
         Image image = icon.getImage();
         jPanel1 = new javax.swing.JPanel(){
             public void paintComponent(Graphics g){
@@ -53,6 +59,8 @@ public class GestionDeInscripciones extends javax.swing.JInternalFrame {
         jbInsc = new javax.swing.JButton();
         jbNoInsc = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+
+        jPanel1.setPreferredSize(new java.awt.Dimension(571, 571));
 
         jLabel1.setBackground(new java.awt.Color(0, 153, 255));
         jLabel1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
@@ -80,6 +88,12 @@ public class GestionDeInscripciones extends javax.swing.JInternalFrame {
             }
         });
 
+        jcAlu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcAluActionPerformed(evt);
+            }
+        });
+
         jrInsc.setBackground(new java.awt.Color(0, 153, 255));
         jrInsc.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jrInsc.setText("Materias Inscriptas");
@@ -90,9 +104,21 @@ public class GestionDeInscripciones extends javax.swing.JInternalFrame {
             }
         });
 
+        jbInsc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/addInsc.png"))); // NOI18N
         jbInsc.setText("Inscribir");
+        jbInsc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbInscActionPerformed(evt);
+            }
+        });
 
+        jbNoInsc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/borrar.png"))); // NOI18N
         jbNoInsc.setText("Anular Inscripcion");
+        jbNoInsc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbNoInscActionPerformed(evt);
+            }
+        });
 
         jLabel2.setBackground(new java.awt.Color(0, 153, 255));
         jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
@@ -104,32 +130,31 @@ public class GestionDeInscripciones extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jScrollPane1)
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(145, 145, 145)
-                .addComponent(jbInsc)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jbNoInsc)
-                .addGap(151, 151, 151))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jbSalir)
-                .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(118, 118, 118)
+                        .addComponent(jbInsc, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(138, 138, 138)
+                        .addComponent(jbNoInsc, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(173, 173, 173)
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
                         .addComponent(jcAlu, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jrInsc)
-                        .addGap(114, 114, 114)
-                        .addComponent(jLabel2)))
-                .addContainerGap(214, Short.MAX_VALUE))
+                        .addGap(257, 257, 257)
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(jrInsc)))
+                .addContainerGap(155, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jbSalir)
+                .addGap(21, 21, 21))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -138,34 +163,32 @@ public class GestionDeInscripciones extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jcAlu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(83, 83, 83)
-                        .addComponent(jrInsc)
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2)
-                        .addGap(31, 31, 31)))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jrInsc)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbInsc)
-                    .addComponent(jbNoInsc))
-                .addGap(23, 23, 23)
+                    .addComponent(jbInsc, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbNoInsc, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(jbSalir)
-                .addContainerGap())
+                .addGap(45, 45, 45))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 871, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -180,7 +203,43 @@ public class GestionDeInscripciones extends javax.swing.JInternalFrame {
         // Materia Inscriptas
         modelo.setRowCount(0);
         cargarTabla();
+        botonAnular();
     }//GEN-LAST:event_jrInscActionPerformed
+
+    private void jbInscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbInscActionPerformed
+        // Inscribirse
+        int filaSelec = this.jTable1.getSelectedRow();
+        if (filaSelec != -1) {
+            int idMate = Integer.parseInt(this.jTable1.getValueAt(filaSelec, 0).toString());
+            Alumno alu = (Alumno) this.jcAlu.getSelectedItem();
+            Inscripcion ins = new Inscripcion(0, alu, MateriaDatos.buscarMateriaPorId(idMate));
+            InscripcionDatos.guardarInscripcion(ins);
+            modelo.setRowCount(0);
+            cargarTabla();
+        } else {
+            JOptionPane.showMessageDialog(null, "> Debe Selecionar una Fila en la Tabla <", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jbInscActionPerformed
+
+    private void jcAluActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcAluActionPerformed
+        // combox cargar tabla
+        modelo.setRowCount(0);
+        cargarTabla();
+    }//GEN-LAST:event_jcAluActionPerformed
+
+    private void jbNoInscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNoInscActionPerformed
+        // Anular Inscripcion
+        int filaSelec = this.jTable1.getSelectedRow();
+        if (filaSelec != -1) {
+            Alumno alu = (Alumno) this.jcAlu.getSelectedItem();
+            Inscripcion idInsc = InscripcionDatos.buscarInscripcionPorIdAlu(alu.getIdAlumno());
+            InscripcionDatos.eliminarInscripcion(idInsc.getIdInscripcion());
+            modelo.setRowCount(0);
+            cargarTabla();
+        } else {
+            JOptionPane.showMessageDialog(null, "> Debe Selecionar una Fila en la Tabla <", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jbNoInscActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -196,9 +255,8 @@ public class GestionDeInscripciones extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButton jrInsc;
     // End of variables declaration//GEN-END:variables
 
-
     private void armarCabezera() {
-        modelo.addColumn("IdInscripcion");
+        modelo.addColumn("IdMateria");
         modelo.addColumn("Nombre");
         modelo.addColumn("Año");
         modelo.addColumn("Anual");
@@ -239,11 +297,18 @@ public class GestionDeInscripciones extends javax.swing.JInternalFrame {
         return "No";
     }
 
-    private boolean activoBoolean(String ok) {
-        if (ok.equalsIgnoreCase("true")) {
-            return true;
+    private void botonAnular() {
+        if (this.jrInsc.isSelected()) {
+            this.jbNoInsc.setEnabled(true);
+            this.jbInsc.setEnabled(false);
+        } else {
+            this.jbNoInsc.setEnabled(false);
+            this.jbInsc.setEnabled(true);
         }
-        return false;
     }
-
+    
+    private void ajustarAlturaDeFilas(int altura) {
+        jTable1.setRowHeight(altura);
+    }
+    
 }

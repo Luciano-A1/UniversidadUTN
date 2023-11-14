@@ -40,7 +40,7 @@ public class MateriaDatos {
     }
 
     public static Materia buscarMateriaPorId(int id) {
-        String sql = "select nombre, año, anual from materia where idMateria = ? and estado = 1";
+        String sql = "select * from materia where idMateria = ? and estado = 1";
         Materia materia = new Materia();
         try {
             ps = con.prepareStatement(sql);

@@ -49,7 +49,7 @@ public class Menu extends javax.swing.JFrame {
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 591, Short.MAX_VALUE)
+            .addGap(0, 587, Short.MAX_VALUE)
         );
 
         jMenuBar1.setBackground(new java.awt.Color(0, 102, 255));
@@ -78,8 +78,10 @@ public class Menu extends javax.swing.JFrame {
 
         jMenuBar1.add(Adminstrador);
 
+        jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/insc.png"))); // NOI18N
         jMenu2.setText("Inscripciones");
 
+        jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/buscaIns.png"))); // NOI18N
         jMenuItem4.setText("Manejo de Incripciones");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -88,12 +90,13 @@ public class Menu extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem4);
 
-        jMenuItem5.setText("jMenuItem5");
+        jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/insc1.png"))); // NOI18N
+        jMenuItem5.setText("Actualizacion de Notas");
         jMenu2.add(jMenuItem5);
 
         jMenuBar1.add(jMenu2);
 
-        jMenu3.setText("jMenu3");
+        jMenu3.setText("Consultas de Alumnos Por Materia");
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);

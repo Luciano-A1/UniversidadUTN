@@ -90,7 +90,7 @@ public class GestionDeAlumnos extends javax.swing.JInternalFrame {
         cargarTabla();
         textmod(false);
         elejirColumanasFechas(4);
-         ajustarAlturaDeFilas(40);
+        ajustarAlturaDeFilas(40);
     }
 
     /**

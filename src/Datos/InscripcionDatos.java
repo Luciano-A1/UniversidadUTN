@@ -60,6 +60,28 @@ public class InscripcionDatos {
         }
         return insc;
     }
+    
+    public static Inscripcion buscarInscripcionPorIdAlu(int idAlu) {
+        String busquedaSQL = "select * from inscripcion where idAlumno = ?";
+        Inscripcion insc = new Inscripcion();
+        try {
+            ps = con.prepareStatement(busquedaSQL);
+            ps.setInt(1, idAlu);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                insc.setIdInscripcion(rs.getInt("idInscripcion"));
+                insc.setNota(rs.getDouble("nota"));
+                insc.setAlumno(AlumnoDatos.buscarAlumnosPorId(idAlu));
+                insc.setMateria(MateriaDatos.buscarMateriaPorId(rs.getInt("idMateria")));
+            } else {
+                JOptionPane.showMessageDialog(null, "Inscripcion no Encontrada o Inactiva");
+            }
+            ps.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error: Acceso Inscripcion");
+        }
+        return insc;
+    }
 
     public static List<Inscripcion> listarInscripciones() {
         List<Inscripcion> listaInsc = new ArrayList<>();
@@ -85,7 +107,7 @@ public class InscripcionDatos {
     public static List<Materia> obtenerMateriasCursadas(int idA) {
         List<Materia> materia = new ArrayList<>();
         
-        String sqlBusqueda = "SELECT inscripcion.idMateria, nombre, año, anual FROM inscripcion JOIN materia ON(inscripcion.idMateria=materia.idMateria) WHERE inscripcion.idAlumno = ?";
+        String sqlBusqueda = "SELECT inscripcion.idMateria, nombre, año, anual, estado FROM inscripcion JOIN materia ON(inscripcion.idMateria=materia.idMateria) WHERE inscripcion.idAlumno = ?";
         
         try {
             ps = con.prepareStatement(sqlBusqueda);
