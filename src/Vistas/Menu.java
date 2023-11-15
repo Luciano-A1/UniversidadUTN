@@ -92,6 +92,11 @@ public class Menu extends javax.swing.JFrame {
 
         jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/insc1.png"))); // NOI18N
         jMenuItem5.setText("Actualizacion de Notas");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem5);
 
         jMenuBar1.add(jMenu2);
@@ -144,6 +149,16 @@ public class Menu extends javax.swing.JFrame {
         this.jDesktopPane1.add(gdi);
         this.jDesktopPane1.moveToFront(gdi);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        // Carga de Notas
+        this.jDesktopPane1.removeAll();
+        this.jDesktopPane1.repaint();
+        CargaDeNotas cdn = new CargaDeNotas();
+        cdn.setVisible(true);
+        this.jDesktopPane1.add(cdn);
+        this.jDesktopPane1.moveToFront(cdn);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**
      * @param args the command line arguments
