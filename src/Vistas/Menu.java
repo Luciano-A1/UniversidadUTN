@@ -37,7 +37,8 @@ public class Menu extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -101,8 +102,19 @@ public class Menu extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
-        jMenu3.setText("Consultas de Alumnos Por Materia");
-        jMenuBar1.add(jMenu3);
+        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/aluB2.png"))); // NOI18N
+        jMenu1.setText("Consultas");
+
+        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/aluBuscar.png"))); // NOI18N
+        jMenuItem3.setText("Alumno por Materia");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem3);
+
+        jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
 
@@ -127,7 +139,7 @@ public class Menu extends javax.swing.JFrame {
         GestionDeAlumnos gda = new GestionDeAlumnos();
         gda.setVisible(true);
         this.jDesktopPane1.add(gda);
-        this.jDesktopPane1.moveToFront(gda);   
+        this.jDesktopPane1.moveToFront(gda);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
@@ -159,6 +171,16 @@ public class Menu extends javax.swing.JFrame {
         this.jDesktopPane1.add(cdn);
         this.jDesktopPane1.moveToFront(cdn);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // Consultas Alu x Mat
+        this.jDesktopPane1.removeAll();
+        this.jDesktopPane1.repaint();
+        ConsultasAlumnoPorMateria cam = new ConsultasAlumnoPorMateria();
+        cam.setVisible(true);
+        this.jDesktopPane1.add(cam);
+        this.jDesktopPane1.moveToFront(cam);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -198,11 +220,12 @@ public class Menu extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Adminstrador;
     private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     // End of variables declaration//GEN-END:variables
