@@ -1,10 +1,6 @@
 package universidadutn;
 
-import Datos.AlumnoDatos;
-import Entidades.Alumno;
 import Vistas.Menu;
-import java.time.LocalDate;
-import java.time.Month;
 
 public class UniversidadUTN {
 
